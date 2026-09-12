@@ -1,58 +1,18 @@
-@import "tailwindcss";
-
-@layer base {
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-  }
-}
-
-.font-serif-cormorant {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-}
-
-.font-serif-playfair {
-  font-family: 'Playfair Display', Georgia, serif;
-}
-
-.font-script {
-  font-family: 'Alex Brush', cursive;
-}
-
-/* Subtle glowing and romantic glass styles */
-.romantic-glass {
-  background: rgba(26, 9, 18, 0.45);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(244, 114, 182, 0.15);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45), 0 0 25px -5px rgba(225, 29, 72, 0.15);
-}
-
-.romantic-glow-btn {
-  background: linear-gradient(135deg, #e11d48 0%, #be123c 60%, #881337 100%);
-  box-shadow: 0 0 20px rgba(225, 29, 72, 0.35), 0 0 40px rgba(225, 29, 72, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.romantic-glow-btn:hover {
-  box-shadow: 0 0 30px rgba(244, 63, 94, 0.6), 0 0 60px rgba(225, 29, 72, 0.3);
-  transform: translateY(-2px);
-}
-
-.romantic-glow-btn:active {
-  transform: translateY(1px);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #090306;
-}
-::-webkit-scrollbar-thumb {
-  background: #4c0519;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #9f1239;
-}
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+:root { font-family: 'Plus Jakarta Sans', sans-serif; color: #f9e9ed; background: #080305; font-synthesis: none; }
+* { box-sizing: border-box; } html { scroll-behavior: smooth; } body { margin: 0; min-width: 320px; background: #080305; } button, input, textarea { font: inherit; } button { color: inherit; }
+.love-letter-site, .opening-screen { position: relative; overflow: hidden; background: radial-gradient(circle at 50% 15%, #3a101e 0, #14070d 28%, #080305 72%); }
+.film-grain { position: fixed; inset: 0; z-index: 20; pointer-events: none; opacity: .07; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E"); }
+ .opening-screen { min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 32px; }.opening-screen:before, .final-section:before { content: ''; position: absolute; width: 70vw; height: 70vw; max-width: 800px; max-height: 800px; border: 1px solid rgba(208, 75, 105, .18); border-radius: 50%; box-shadow: 0 0 100px rgba(168, 31, 66, .17); }.opening-copy { position: relative; z-index: 1; animation: rise 1.5s ease both; }.opening-copy h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; }.opening-copy h1 { margin: 24px 0 10px; font-size: clamp(74px, 15vw, 170px); line-height: .75; letter-spacing: -.04em; }.opening-copy h1 span, h2 span { color: #e9a1b4; }.eyebrow { margin: 0 0 24px; color: #dc879d; font-size: 10px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; }.opening-line { color: #f4c5d0; font-family: 'Alex Brush', cursive; font-size: clamp(28px, 4vw, 48px); margin: 28px 0 12px; }.opening-subline, .section-lede { color: #c99eaa; font-size: 13px; letter-spacing: .03em; }
+ .primary-button, .upload-button { display: inline-flex; gap: 10px; align-items: center; border: 1px solid rgba(240, 151, 172, .36); border-radius: 999px; background: rgba(126, 22, 47, .45); padding: 14px 21px; margin-top: 36px; cursor: pointer; transition: .3s; }.primary-button:hover, .upload-button:hover { background: #a42b4c; transform: translateY(-2px); box-shadow: 0 12px 35px rgba(164, 43, 76, .25); }.primary-button svg { color: #ffc4d1; }.opening-signature { position: absolute; bottom: 34px; color: #ae7180; font: 18px 'Alex Brush', cursive; line-height: 1.1; }.opening-signature b, .signature b { color: #ed9aae; font-weight: 400; }
+ .site-nav { position: absolute; z-index: 3; top: 0; width: 100%; display: flex; justify-content: space-between; padding: 26px 5vw; color: #d695a5; font-size: 12px; letter-spacing: .08em; }.site-nav i { color: #9b5669; font-family: 'Cormorant Garamond', serif; }.site-nav a { color: #c58293; text-decoration: none; }
+ .chapter, .plea-section, .want-section, .yen-section, .final-section { min-height: 100vh; padding: 150px max(7vw, 24px); display: flex; flex-direction: column; justify-content: center; }.chapter-intro { align-items: center; text-align: center; background: linear-gradient(180deg, #12050b, #1e0811 55%, #080305); } h2 { font-size: clamp(64px, 10vw, 142px); line-height: .83; letter-spacing: -.055em; margin: 0; } h2 em { color: #e7a2b1; font-style: italic; }.letter-panel { max-width: 610px; margin: 70px auto 0; padding: 34px clamp(24px, 5vw, 66px); border-left: 1px solid #bd516f; background: rgba(38, 10, 21, .4); text-align: left; }.letter-panel p { margin: 0; white-space: pre-line; color: #e9c1ca; font: 23px/1.42 'Cormorant Garamond', Georgia, serif; }
+ .plea-section { text-align: center; align-items: center; background: radial-gradient(circle at center, #421122, #10040a 62%); }.plea-lines { margin: 80px 0; font: clamp(30px, 5vw, 62px)/1.12 'Cormorant Garamond', serif; color: #e8bdc7; }.plea-lines p { margin: 12px 0; }.plea-close { color: #c98d9e; font-size: 14px; line-height: 1.8; }.plea-close p { margin: 0; }
+ .memories-section { background: #0a0407; align-items: center; text-align: center; }.memories-section .section-lede { max-width: 470px; margin: 25px auto 0; line-height: 1.8; }.upload-button { margin: 30px 0 60px; color: #f2c4cf; }.upload-button input, .icon-button input { display: none; }.memory-grid { width: 100%; max-width: 1100px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; align-items: start; }.memory-card { border: 0; background: none; padding: 0; text-align: left; cursor: pointer; transition: transform .4s; }.memory-card:hover { transform: translateY(-8px); }.memory-1, .memory-5, .memory-9 { margin-top: 45px; }.memory-image { aspect-ratio: 4/5; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; background: #170a11; border: 1px solid rgba(216, 108, 135, .23); color: #ad6077; overflow: hidden; }.memory-image span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }.memory-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s; }.memory-card:hover img { transform: scale(1.05); }.memory-card p { color: #c58d9d; font: 22px 'Alex Brush', cursive; margin: 12px 2px; }
+ .miss-section { background: linear-gradient(120deg, #160811, #080305); align-items: center; text-align: center; }.miss-list { margin: 75px 0; text-align: left; font: clamp(27px, 4vw, 50px) 'Cormorant Garamond', serif; color: #dfb4be; }.miss-list p { margin: 9px 0; }.miss-section h3 { color: #c68c9c; font-size: clamp(30px, 4vw, 52px); font-weight: 300; text-align: center; }.miss-section h3 em { color: #f0a4b5; font-size: 1.45em; }
+ .timeline-section { background: #10050b; align-items: center; text-align: center; }.timeline { display: grid; grid-template-columns: repeat(2, minmax(0, 330px)); gap: 22px; margin-top: 70px; width: 100%; justify-content: center; }.timeline-card { border-top: 1px solid #a94360; padding: 25px 8px; text-align: left; }.timeline-card span { color: #a95b72; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; }.timeline-card input, .timeline-card textarea { display: block; width: 100%; border: 0; border-bottom: 1px solid rgba(224, 137, 158, .28); outline: 0; background: transparent; color: #eab6c2; }.timeline-card input { margin: 18px 0; font: 34px 'Cormorant Garamond', serif; }.timeline-card textarea { min-height: 80px; resize: vertical; font: 16px/1.5 'Cormorant Garamond', serif; }.timeline-card small { display: block; color: #956073; font-size: 10px; margin-top: 16px; }
+ .want-section { text-align: center; align-items: center; background: radial-gradient(circle at 50% 60%, #441123, #0b0408 60%); }.want-line { margin: 12px 0; color: #cf9aa8; font: clamp(24px, 3vw, 40px) 'Cormorant Garamond', serif; }.want-line:nth-of-type(4) { color: #efa7b6; }.want-section h2 { margin-top: 75px; font-size: clamp(58px, 9vw, 120px); }.letter-section { align-items: center; text-align: center; background: #0d0509; }.letter-section .letter-panel { margin-top: 70px; }.yen-section { align-items: center; text-align: center; background: radial-gradient(circle, #4b1128, #0d0409 67%); }.yen-lines { margin: 45px 0 75px; font: clamp(28px, 5vw, 63px)/1.1 'Cormorant Garamond', serif; }.yen-lines p { margin: 8px 0; }.yen-final { color: #f0b5c2; font: clamp(24px, 4vw, 44px) 'Alex Brush', cursive; line-height: 1.4; }.yen-final p { margin: 0; }
+ .quiet-section { align-items: center; text-align: center; background: #090407; }.quiet-copy { max-width: 570px; margin: 65px auto 0; color: #cf9fac; font: 24px/1.35 'Cormorant Garamond', serif; }.quiet-copy strong { color: #f0afbd; font-weight: 400; }.song-section { display: flex; align-items: center; justify-content: center; gap: 18px; min-height: 220px; padding: 50px 24px; background: #13060c; text-align: center; }.song-section h2 { font-size: 58px; }.song-section p { color: #ad7183; margin: 5px 0; }.icon-button { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid #8f3c58; border-radius: 50%; background: #2c0b19; cursor: pointer; }.icon-button:hover { background: #872140; }
+ .final-section { position: relative; overflow: hidden; min-height: 110vh; align-items: center; text-align: center; background: #050204; }.final-section > div { position: relative; z-index: 1; }.final-line { color: #b9808d; font: clamp(25px, 4vw, 46px) 'Cormorant Garamond', serif; margin: 14px; }.final-pause { height: 100px; }.final-section h2 { font-size: clamp(53px, 10vw, 140px); }.final-tamil { color: #ea9fb1; font: 46px 'Alex Brush', cursive; margin: 55px 0 20px; }.final-section h3 { color: #f0a5b7; font-size: clamp(35px, 6vw, 75px); font-weight: 400; margin: 40px 0 100px; }.signature { color: #b97888; line-height: 1.3; }.signature b { font: 50px 'Alex Brush', cursive; }.lightbox { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 30px; background: rgba(3, 1, 3, .94); }.lightbox img { max-width: min(92vw, 1000px); max-height: 88vh; object-fit: contain; }.lightbox button { position: absolute; top: 24px; right: 24px; border: 0; background: none; cursor: pointer; color: #f7c5d0; }.reveal { animation: rise 1s ease both; } @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+ @media (max-width: 700px) { .site-nav { padding: 20px; }.site-nav a { display: none; }.chapter, .plea-section, .want-section, .yen-section, .final-section { padding: 110px 22px; }.letter-panel { margin-top: 45px; padding: 25px 20px; }.letter-panel p { font-size: 20px; }.memory-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }.memory-1, .memory-5, .memory-9 { margin-top: 25px; }.memory-card p { font-size: 19px; }.timeline { grid-template-columns: 1fr; margin-top: 45px; }.plea-lines { margin: 55px 0; }.miss-list { margin: 50px 0; }.quiet-copy { font-size: 21px; margin-top: 45px; }.song-section { flex-wrap: wrap; }.song-section > div { width: 100%; } }

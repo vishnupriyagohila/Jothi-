@@ -1,105 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { AnimatePresence } from 'motion/react';
-import { PageId } from './types';
-import { BackgroundEffects } from './components/BackgroundEffects';
-import { VideoBackground } from './components/VideoBackground';
-import { MusicPlayer } from './components/MusicPlayer';
-import { StoryProgress } from './components/StoryProgress';
-import { PageOpening } from './components/PageOpening';
-import { PageOriginStory } from './components/PageOriginStory';
-import { PageFirstDate } from './components/PageFirstDate';
-import { InteractiveYesNo } from './components/InteractiveYesNo';
-import { PageLoveLetter } from './components/PageLoveLetter';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Heart, ImagePlus, Music2, Pause, Play, X } from 'lucide-react';
+
+type Memory = { id: number; caption: string; image: string | null };
+const initialMemories: Memory[] = [
+  { id: 1, caption: 'Namma moments.', image: null },
+  { id: 2, caption: 'En favourite memories.', image: null },
+  { id: 3, caption: 'I miss these days.', image: null },
+  { id: 4, caption: 'I miss this version of us.', image: null },
+  { id: 5, caption: 'I miss you.', image: null },
+  { id: 6, caption: 'Just us.', image: null },
+  { id: 7, caption: 'A little piece of forever.', image: null },
+  { id: 8, caption: 'The days I hold close.', image: null },
+  { id: 9, caption: 'Our quiet happiness.', image: null },
+  { id: 10, caption: 'Still my favourite story.', image: null },
+];
+const missLines = ['I miss talking to you.', 'I miss your presence.', 'I miss your voice.', 'I miss your smile.', 'I miss our random conversations.', 'I miss our silly moments.', 'I miss being your person.'];
+const apology = `Jothi,\n\nI know I hurt you.\n\nAnd honestly… I don't know how many times I should say sorry for you to believe that I really mean it.\n\nBut I am genuinely sorry.\n\nSorry for hurting you.\nSorry for making you feel bad.\nSorry for the things I did.\nSorry for the things I didn't understand.\nSorry for making you question my love.\nSorry for making you feel like you weren't enough.\n\nYou didn't deserve to feel that way because of me.\n\nI wish I could go back and handle everything differently.\n\nI can't change what already happened…\n\nBut I can tell you honestly now:\n\nI'm sorry. Truly. From my heart. ❤️`;
+const heartMessage = `Jothi,\n\nI know things aren't okay right now.\n\nI know saying sorry won't instantly fix everything.\n\nI know I hurt you.\n\nBut please believe me when I say that losing you is not something I want.\n\nI don't want our memories to become just memories.\n\nI don't want us to become two people who once loved each other.\n\nI still want to talk to you.\n\nI still want to laugh with you.\n\nI still want to annoy you.\n\nI still want our stupid little conversations.\n\nI still want our fights and our patch-ups.\n\nI still want to make more memories with you.\n\nI still want us.\n\nIf I could get one chance…\n\nI wouldn't ask for everything to become perfect immediately.\n\nI'd just ask for one chance to make things right.\n\nOne conversation.\n\nOne beginning.\n\nOne more chance for us.\n\nBecause…\n\nI still choose you. ❤️`;
+
+function Reveal({ children, className = '' }: { children: ReactNode; className?: string }) { return <div className={`reveal ${className}`}>{children}</div>; }
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageId>('opening');
+  const [started, setStarted] = useState(false);
+  const [memories, setMemories] = useState<Memory[]>(() => { try { const saved = localStorage.getItem('jothi-memories'); return saved ? JSON.parse(saved) : initialMemories; } catch { return initialMemories; } });
+  const [lightbox, setLightbox] = useState<string | null>(null);
+  const [song, setSong] = useState<string | null>(null);
+  const [songName, setSongName] = useState('Our song…');
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [dates, setDates] = useState([{ date: 'March 28 ❤️', memory: 'Write what this day means to us.' }, { date: 'April 14 ❤️', memory: 'Write our little memory here.' }]);
 
-  // Scroll to top on page change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+  useEffect(() => { localStorage.setItem('jothi-memories', JSON.stringify(memories)); }, [memories]);
+  const uploadImages = (files: FileList | null) => { if (!files) return; Array.from(files).slice(0, 10).forEach((file, index) => { const reader = new FileReader(); reader.onload = () => setMemories((current) => current.map((memory, position) => position === index ? { ...memory, image: reader.result as string } : memory)); reader.readAsDataURL(file); }); };
+  const uploadSong = (file: File | undefined) => { if (!file) return; if (song) URL.revokeObjectURL(song); setSong(URL.createObjectURL(file)); setSongName(file.name.replace(/\.[^/.]+$/, '')); setPlaying(false); };
+  const toggleSong = () => { if (!audioRef.current) return; if (playing) audioRef.current.pause(); else audioRef.current.play().catch(() => {}); setPlaying(!playing); };
 
-  const handleNextFromOpening = () => {
-    setCurrentPage('origin');
-  };
+  if (!started) return <main className="opening-screen"><div className="film-grain" /><div className="opening-copy"><p className="eyebrow">A letter from Vibi</p><h1>Jothi<span>…</span></h1><p className="opening-line">Konjam enna kekkariya…</p><p className="opening-subline">I have something I really need to tell you.</p><button className="primary-button" onClick={() => setStarted(true)}>Please stay for a minute <Heart size={16} fill="currentColor" /></button></div><div className="opening-signature">made with a heart that still chooses you<br /><b>Vibi</b></div></main>;
 
-  const handleNextFromOrigin = () => {
-    setCurrentPage('first-date');
-  };
-
-  const handleNextFromFirstDate = () => {
-    setCurrentPage('interactive');
-  };
-
-  const handleYesFromInteractive = () => {
-    setCurrentPage('promise');
-  };
-
-  const handleRestart = () => {
-    setCurrentPage('opening');
-  };
-
-  return (
-    <div className="relative min-h-screen w-full bg-[#090306] text-rose-50 overflow-x-hidden flex flex-col justify-between selection:bg-rose-900/60 selection:text-rose-100">
-      {/* Romantic Ambient Video Background */}
-      <VideoBackground />
-
-      {/* Background Animated Ambient Effects & Floating Hearts */}
-      <BackgroundEffects />
-
-      {/* Floating Audio / Music Player */}
-      <MusicPlayer />
-
-      {/* Story Chapter Progress Indicator */}
-      <StoryProgress
-        currentPage={currentPage}
-        onSelectPage={(page) => setCurrentPage(page)}
-      />
-
-      {/* Main Story Container with Smooth Transitions */}
-      <main className="relative z-10 w-full flex-1 flex flex-col items-center justify-center pt-20 pb-12 px-3 sm:px-6">
-        <AnimatePresence mode="wait">
-          {currentPage === 'opening' && (
-            <PageOpening key="opening" onContinue={handleNextFromOpening} />
-          )}
-
-          {currentPage === 'origin' && (
-            <PageOriginStory
-              key="origin"
-              onContinue={handleNextFromOrigin}
-              onBack={() => setCurrentPage('opening')}
-            />
-          )}
-
-          {currentPage === 'first-date' && (
-            <PageFirstDate
-              key="first-date"
-              onContinue={handleNextFromFirstDate}
-              onBack={() => setCurrentPage('origin')}
-            />
-          )}
-
-          {currentPage === 'interactive' && (
-            <InteractiveYesNo
-              key="interactive"
-              onYes={handleYesFromInteractive}
-              onBack={() => setCurrentPage('first-date')}
-            />
-          )}
-
-          {currentPage === 'promise' && (
-            <PageLoveLetter
-              key="love-letter"
-              onRestart={handleRestart}
-            />
-          )}
-        </AnimatePresence>
-      </main>
-
-      {/* Subtle Footer */}
-      <footer className="relative z-10 py-4 text-center text-xs text-rose-500/40 tracking-wider">
-        <span>Made with ❤️ specially for Jothi Ramalingar</span>
-      </footer>
-    </div>
-  );
+  return <div className="love-letter-site"><div className="film-grain" /><header className="site-nav"><span>Vibi <i>for</i> Jothi</span><a href="#memories">our memories</a></header>
+    <section className="chapter chapter-intro"><Reveal><p className="eyebrow">01 / the things I should have said sooner</p><h2>I'm Sorry,<br /><em>Jothi.</em></h2></Reveal><Reveal className="letter-panel"><p>{apology}</p></Reveal></section>
+    <section className="plea-section"><Reveal><p className="eyebrow">02 / please hear me</p><h2>Jothi…<br /><em>Please don't go.</em></h2></Reveal><div className="plea-lines">{['Yen thango…', 'Konjam irunga…', 'Enna vittu pogadhinga please…'].map((line) => <Reveal key={line}><p>{line}</p></Reveal>)}</div><Reveal className="plea-close"><p>I know I'm asking for another chance.</p><p>But I really don't want to lose you.</p></Reveal></section>
+    <section className="chapter memories-section" id="memories"><Reveal><p className="eyebrow">03 / the moments I keep returning to</p><h2>Namma<span>…</span></h2><p className="section-lede">Only our photos belong here. Upload them and let this little gallery become ours again.</p></Reveal><label className="upload-button"><ImagePlus size={17} /> Upload our photos<input type="file" accept="image/*" multiple onChange={(event) => uploadImages(event.target.files)} /></label><div className="memory-grid">{memories.map((memory, index) => <button className={`memory-card memory-${index % 4}`} key={memory.id} onClick={() => memory.image && setLightbox(memory.image)}><div className="memory-image">{memory.image ? <img src={memory.image} alt={memory.caption} /> : <><ImagePlus size={25} /><span>add our photo</span></>}</div><p>{memory.caption}</p></button>)}</div></section>
+    <section className="chapter miss-section"><Reveal><p className="eyebrow">04 / the truth I can't hide</p><h2>You know what<br /><em>I miss?</em></h2></Reveal><div className="miss-list">{missLines.map((line) => <Reveal key={line}><p>{line}</p></Reveal>)}</div><Reveal><h3>Most of all…<br /><em>I miss US. ❤️</em></h3></Reveal></section>
+    <section className="chapter timeline-section"><Reveal><p className="eyebrow">05 / pages I never want to lose</p><h2>Our special<br /><em>dates.</em></h2></Reveal><div className="timeline">{dates.map((item, index) => <div className="timeline-card" key={index}><span>chapter {String(index + 1).padStart(2, '0')}</span><input value={item.date} onChange={(event) => setDates((current) => current.map((date, position) => position === index ? { ...date, date: event.target.value } : date))} /><textarea value={item.memory} onChange={(event) => setDates((current) => current.map((date, position) => position === index ? { ...date, memory: event.target.value } : date))} /><small>add a quote or tiny detail here</small></div>)}</div></section>
+    <section className="want-section"><Reveal><p className="eyebrow">06 / there was never anyone else</p>{['I don’t want someone else.', 'I don’t want a replacement.', 'I don’t want another story.', 'I want you.', 'I want the person I fell in love with.', 'I want the person who became my home.'].map((line) => <p className="want-line" key={line}>{line}</p>)}<h2>I want you back,<br /><em>Jothi. ❤️</em></h2></Reveal></section>
+    <section className="chapter letter-section"><Reveal><p className="eyebrow">07 / my heart's actual message</p><h2>One more<br /><em>beginning.</em></h2></Reveal><Reveal className="letter-panel"><p>{heartMessage}</p></Reveal></section>
+    <section className="yen-section"><Reveal><p className="eyebrow">08 / yen thango</p><div className="yen-lines">{['No not letting you go 🥹', 'Yenaku Venum Us.', 'Nenga nanum plsss.', 'Vera yarum vena.', 'Pls thango.', 'Yen chelam yaruuuuu.'].map((line) => <p key={line}>{line}</p>)}</div><div className="yen-final"><p>Enaku nee venum Jothi.</p><p>Enaku namma venum.</p><p>Enaku namma life-la innum neraya memories venum.</p></div></Reveal></section>
+    <section className="chapter quiet-section"><Reveal><p className="eyebrow">09 / I know</p><h2>I'm not asking you<br /><em>to forget.</em></h2><p className="quiet-copy">I'm not asking you to forget everything that happened.<br /><br />I'm not asking you to stop being hurt immediately.<br /><br />I'm not asking you to forgive me just because I'm saying sorry.<br /><br /><strong>Take your time.</strong><br /><br />Feel whatever you need to feel.<br /><br />I just want you to know that I'm genuinely sorry.<br /><br />And if someday you're ready…<br /><br />I'll still be here.<br /><br />Because I don't want to give up on us.</p></Reveal></section>
+    <section className="song-section"><div><p className="eyebrow">a little soundtrack, only if you want it</p><h2>Our song<span>…</span></h2><p>{songName}</p></div><label className="icon-button" title="Upload our song"><Music2 size={18} /><input type="file" accept="audio/*" onChange={(event) => uploadSong(event.target.files?.[0])} /></label>{song && <button className="icon-button" onClick={toggleSong} title={playing ? 'Pause' : 'Play'}>{playing ? <Pause size={18} /> : <Play size={18} fill="currentColor" />}</button>}<audio ref={audioRef} src={song ?? undefined} onEnded={() => setPlaying(false)} /></section>
+    <footer className="final-section"><Reveal><p className="final-line">I'm sorry.</p><p className="final-line">I miss you.</p><p className="final-line">I miss us.</p><p className="final-line">I still love you.</p><div className="final-pause" /><h2>PLEASE COME BACK,<br /><em>JOTHI. ❤️</em></h2><p className="final-tamil">Yen thango…</p><p>Let's not lose everything we built because of one chapter.</p><h3>I WANT US BACK. 🥹❤️</h3><p className="signature">No matter how many times I have to say it…<br /><br />I'm sorry.<br />I love you.<br />And I want you back.<br /><br /><b>Vibi</b></p></Reveal></footer>
+    {lightbox && <div className="lightbox" onClick={() => setLightbox(null)}><button onClick={() => setLightbox(null)}><X /></button><img src={lightbox} alt="Our memory" /></div>}
+  </div>;
 }

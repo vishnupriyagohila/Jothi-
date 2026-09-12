@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Film, Eye, EyeOff, Sliders, Sparkles, Check, ChevronDown, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
+const publicAsset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;
+
 export interface VideoPreset {
   id: string;
   name: string;
@@ -15,14 +17,14 @@ export const ROMANTIC_VIDEO_PRESETS: VideoPreset[] = [
     id: 'candlelight',
     name: 'Candlelight Glow',
     description: 'Soft, warm flickering candlelight ambiance',
-    url: '/videos/candle.mp4',
+    url: publicAsset('/videos/candle.mp4'),
     type: 'video/mp4',
   },
   {
     id: 'flower',
     name: 'Blooming Petals',
     description: 'Delicate petals unfolding in romantic time-lapse',
-    url: '/videos/flower.mp4',
+    url: publicAsset('/videos/flower.mp4'),
     type: 'video/mp4',
   },
   {
@@ -148,7 +150,7 @@ export const VideoBackground: React.FC<VideoBackgroundProps> = ({
           >
             <source src={activeUrl} />
             {/* Direct fallback to candlelight if custom or external URL fails */}
-            <source src="/videos/candle.mp4" type="video/mp4" />
+            <source src={publicAsset('/videos/candle.mp4')} type="video/mp4" />
           </video>
         )}
 
